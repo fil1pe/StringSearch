@@ -7,6 +7,6 @@ public abstract class StringSearchStrategy {
 
     private int final NOT_FOUND = -1;
 
-    public static int find(StringBuffer content, String substr);
+    public static int find(java.lang.StringBuffer content, String substr);
 
 }
