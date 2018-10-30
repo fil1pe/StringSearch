@@ -8,13 +8,12 @@ import static pra.Utils.hash;
 public abstract class RabinKarpStringSearch extends StringSearchStrategy {
 
     public int find(String content, String substr, int begin){
-        int hpattern = hash(substr);
         int n = content.length();
         int m = substr.length();
+        int hpattern = hash(substr, 0, m);
         for(int i=begin;i<n-m;i++){
-            String s = content.substring(i, i+m);
-            int hs = hash(s);
-            if(hs == hpattern) if(substr.equals(s)) return i;
+            int hs = hash(content, i, i+m);
+            if(hs == hpattern) if( substr.equals( content.substring(i, i+m) ) ) return i;
         }
         return NOT_FOUND;
     }
