@@ -1,6 +1,5 @@
 package pra.stringsearch;
 
-import java.lang.StringBuffer;
 import static Utils.hash;
 
 /**
