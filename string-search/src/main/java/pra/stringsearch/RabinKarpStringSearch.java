@@ -13,7 +13,7 @@ public abstract class RabinKarpStringSearch extends StringSearchStrategy {
         int hpattern = hash(substr, 0, m);
         for(int i=begin;i<n-m;i++){
             int hs = hash(content, i, i+m);
-            if(hs == hpattern) if( substr.equals( content.substring(i, i+m) ) ) return i;
+            if(hs == hpattern) && substr.equals( content.substring(i, i+m) )) return i;
         }
         return NOT_FOUND;
     }
