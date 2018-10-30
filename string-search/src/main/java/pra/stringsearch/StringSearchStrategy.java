@@ -5,8 +5,13 @@ package pra.stringsearch;
  */
 public abstract class StringSearchStrategy {
 
-    private int final NOT_FOUND = -1;
+    private final int NOT_FOUND = -1;
+    private final String pattern;
+    
+    public StringSearchStrategy(String pattern){
+        this.pattern = pattern;
+    }
 
-    public int find(String content, String substr, int begin);
+    public int find(String content, int begin);
 
 }
