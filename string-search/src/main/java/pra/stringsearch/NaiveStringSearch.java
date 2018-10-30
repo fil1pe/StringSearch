@@ -7,7 +7,7 @@ import java.lang.StringBuffer;
  */
 public abstract class NaiveStringSearch extends StringSearchStrategy {
 
-    public int find(StringBuffer content, String substr, int begin){
+    public int find(String content, String substr, int begin){
         int n = content.length();
         int m = substr.length();
         for(int i=begin;i<n-m;i++){
