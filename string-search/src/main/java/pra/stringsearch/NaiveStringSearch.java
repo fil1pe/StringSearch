@@ -1,7 +1,5 @@
 package pra.stringsearch;
 
-import java.lang.StringBuffer;
-
 /**
  * Naive strategy for finding substring
  */
