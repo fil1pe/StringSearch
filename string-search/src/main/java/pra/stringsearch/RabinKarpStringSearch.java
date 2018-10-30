@@ -1,6 +1,6 @@
 package pra.stringsearch;
 
-import static Utils.hash;
+import static pra.Utils.hash;
 
 /**
  * Rabin Karp strategy for finding substring
