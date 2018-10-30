@@ -5,7 +5,7 @@ import static pra.Utils.hash;
 /**
  * Rabin Karp strategy for finding substring
  */
-public abstract class NaiveStringSearch extends StringSearchStrategy {
+public abstract class RabinKarpStringSearch extends StringSearchStrategy {
 
     public int find(String content, String substr, int begin){
         int hpattern = hash(substr);
