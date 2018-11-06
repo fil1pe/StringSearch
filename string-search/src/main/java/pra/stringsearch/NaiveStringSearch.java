@@ -11,11 +11,10 @@ public class NaiveStringSearch extends StringSearchStrategy {
     
     public int find(String content, int begin){
         int n = content.length();
-        int m = pattern.length();
-        for(int i=begin;i<n-m;i++){
+        for(int i=begin;i<n - patternLength;i++){
             int j=0;
-            while(j<m && content.charAt(i+j) == pattern.charAt(j)) j++;
-            if(j == m) return i;
+            while(j<patternLength && content.charAt(i+j) == pattern.charAt(j)) j++;
+            if(j == patternLength) return i;
         }
         return NOT_FOUND;
     }
