@@ -9,7 +9,7 @@ public class Hash {
     private final int h;
     private final int Q = 101; // A prime number
     private final String str;
-    private int value = 0;
+    public int value = 0;
     private int begin;
     private final int wLength;
     
@@ -22,23 +22,22 @@ public class Hash {
         for(int i=begin;i<begin + wLength - 1;i++) temp = (temp * R)%Q;
         h = temp;
         
-        for(int i=begin; i<begin + wLength; i++) value = (R*value + str[i])%Q;
+        for(int i=begin; i<begin + wLength; i++) value = (R*value + str.charAt(i))%Q;
     }
     
     public void updateHash(){
         begin++;
-        value = (R*(value - str[begin]*h) + str[begin+wLength])%Q;
+        value = (R*(value - str.charAt(begin)*h) + str.charAt(begin+wLength))%Q;
         if(value < 0) value += Q;
     }
     
     @Override
     public boolean equals(Object o){
-        if(!o instanceof Hash){
+        if (!(o instanceof Hash)){
             return false;
         }
           
-        if(this.value == ((Hash) o).value) return true;
-        return false;
+        return this.value == ((Hash) o).value;
     }
     
 }

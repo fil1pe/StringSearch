@@ -5,15 +5,15 @@ package pra.stringsearch;
  */
 public abstract class StringSearchStrategy {
 
-    private final int NOT_FOUND = -1;
-    private final String pattern;
-    private final int patternLength;
+    protected final int NOT_FOUND = -1;
+    protected final String pattern;
+    protected final int patternLength;
     
     public StringSearchStrategy(String pattern){
         this.pattern = pattern;
         patternLength = pattern.length();
     }
 
-    public int find(String content, int begin);
+    public abstract int find(String content, int begin);
 
 }

@@ -5,7 +5,7 @@ package pra.stringsearch;
  */
 public class BoyerMooreStringSearch extends StringSearchStrategy {
     
-    private int[] right = new int[256];
+    private final int[] right = new int[256];
     private final int R = 256;
     
     public BoyerMooreStringSearch(String pattern){

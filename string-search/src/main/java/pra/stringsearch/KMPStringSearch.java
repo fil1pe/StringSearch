@@ -3,12 +3,14 @@ package pra.stringsearch;
 /**
  * Knuth–Morris–Prat strategy for finding substring
  */
-public class RabinKarpStringSearch extends StringSearchStrategy {
+public class KMPStringSearch extends StringSearchStrategy {
     
     private final int[] next;
     
-    public RabinKarpStringSearch(String pattern){
+    public KMPStringSearch(String pattern){
         super(pattern);
+        
+        next = new int[patternLength+1];
         preprocessKMP();
     }
 
@@ -25,8 +27,7 @@ public class RabinKarpStringSearch extends StringSearchStrategy {
         return NOT_FOUND;
     }
     
-    private final void preprocessKMP(){
-        next = new int[patternLength+1];
+    private void preprocessKMP(){
         int i = 0;
         int j = next[0] = -1;
         while(i < patternLength){
