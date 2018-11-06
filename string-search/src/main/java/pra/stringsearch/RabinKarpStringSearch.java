@@ -1,22 +1,25 @@
 package pra.stringsearch;
 
-import static pra.Utils.hash;
+import pra.Hash;
 
 /**
  * Rabin Karp strategy for finding substring
  */
 public abstract class RabinKarpStringSearch extends StringSearchStrategy {
     
+    private final Hash patternHash;
+    
     public RabinKarpStringSearch(String pattern){
         super(pattern);
+        patternHash = new Hash(pattern, 0, patternLength);
     }
 
     public int find(String content, int begin){
         int n = content.length();
-        int hpattern = hash(pattern, 0, patternLength);
+        Hash contentPattern = new Hash(content, 0, patternLength);
         for(int i=begin; i<n - patternLength; i++){
-            int hs = hash(content, i, i+patternLength);
-            if(hs == hpattern) && pattern.equals( content.substring(i, i + patternLength) )) return i;
+            if( patternHash.equals(contentPattern) ) && pattern.equals( content.substring(i, i + patternLength) )) return i;
+            contentPattern.updateHash();
         }
         return NOT_FOUND;
     }
