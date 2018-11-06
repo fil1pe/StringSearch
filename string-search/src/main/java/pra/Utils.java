@@ -19,7 +19,7 @@ public class Hash {
         this.wLength = wLength;
         
         int temp = 1;
-        for(int i=begin;i<end-1;i++) temp = (temp * R)%Q;
+        for(int i=begin;i<begin + wLength - 1;i++) temp = (temp * R)%Q;
         h = temp;
         
         for(int i=begin; i<begin + wLength; i++) value = (R*value + str[i])%Q;
