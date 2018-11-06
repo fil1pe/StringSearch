@@ -14,11 +14,11 @@ public class RabinKarpStringSearch extends StringSearchStrategy {
 
     public int find(String content, int begin){
         int n = content.length();
-        int m = substr.length();
+        int m = pattern.length();
         int i = 0;
-        int j = 0;
+        int j = begin;
         while(j < n){
-            while(i > -1 && substr.charAt(i) != content.charAt(j)) i = next[i];
+            while(i > -1 && pattern.charAt(i) != content.charAt(j)) i = next[i];
             i++;
             j++;
             if(i >= m) return j - i;
