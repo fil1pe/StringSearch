@@ -13,11 +13,10 @@ public abstract class RabinKarpStringSearch extends StringSearchStrategy {
 
     public int find(String content, int begin){
         int n = content.length();
-        int m = pattern.length();
-        int hpattern = hash(pattern, 0, m);
-        for(int i=begin;i<n-m;i++){
-            int hs = hash(content, i, i+m);
-            if(hs == hpattern) && pattern.equals( content.substring(i, i+m) )) return i;
+        int hpattern = hash(pattern, 0, patternLength);
+        for(int i=begin; i<n - patternLength; i++){
+            int hs = hash(content, i, i+patternLength);
+            if(hs == hpattern) && pattern.equals( content.substring(i, i + patternLength) )) return i;
         }
         return NOT_FOUND;
     }
