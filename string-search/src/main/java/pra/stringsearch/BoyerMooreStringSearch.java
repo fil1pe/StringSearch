@@ -5,8 +5,8 @@ package pra.stringsearch;
  */
 public class BoyerMooreStringSearch extends StringSearchStrategy {
     
-    private final int[] right = new int[256];
     private final int R = 256;
+    private final int[] right = new int[R];
     
     public BoyerMooreStringSearch(String pattern){
         super(pattern);
@@ -17,16 +17,16 @@ public class BoyerMooreStringSearch extends StringSearchStrategy {
     public int find(String content, int begin){
         int n = content.length();
         int skip;
-        for(int i = 0; i <= n - patternLength; i += skip){
+        for(int i = 0; i <= n - getPatternLength(); i += skip){
             skip = 0;
-            for(int j = patternLength-1; j >= 0; j--){
-                if(pattern.charAt(j) != content.charAt(i+j)){
+            for(int j = getPatternLength()-1; j >= 0; j--)
+                if(getPattern().charAt(j) != content.charAt(i+j)){
                     skip = Math.max(1, j - right[content.charAt(i+j)]);
                     break;
                 }
-            }
             if (skip == 0) return i;
         }
+        
         return NOT_FOUND;
     }
 

@@ -9,9 +9,9 @@ public class Hash {
     private final int h;
     private final int Q = 101; // A prime number
     private final String str;
-    public int value = 0;
+    private int value = 0;
     private int begin;
-    private final int wLength;
+    private final int wLength; // Window length
     
     public Hash(String str, int begin, int wLength){
         this.str = str;
@@ -26,8 +26,8 @@ public class Hash {
     }
     
     public void updateHash(){
-        begin++;
         value = (R*(value - str.charAt(begin)*h) + str.charAt(begin+wLength))%Q;
+        begin++;
         if(value < 0) value += Q;
     }
     

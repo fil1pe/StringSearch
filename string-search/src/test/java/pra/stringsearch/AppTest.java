@@ -1,11 +1,12 @@
 package pra.stringsearch;
 
+import java.util.Random;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Unit test for simple App.
+ * Unit test string search strategies
  */
 public class AppTest 
     extends TestCase
@@ -29,10 +30,39 @@ public class AppTest
     }
 
     /**
-     * Rigourous Test :-)
+     * Compare the strategies results using random strings
      */
-    public void testApp()
-    {
-        assertTrue( true );
+    public void testComparison(){
+        String content = generateRandomString();
+        String pattern;
+        
+        int a = new Random().nextInt(10000);
+        int b = a + new Random().nextInt(99) + 1; // The substring must contain at most 100 chars
+        if(b > 10000) b = 10000;
+        pattern = content.substring(a, b);
+        
+        StringSearchStrategy[] st = new StringSearchStrategy[4];
+        
+        st[0] = new BoyerMooreStringSearch(pattern);
+        st[1] = new KMPStringSearch(pattern);
+        st[2] = new NaiveStringSearch(pattern);
+        st[3] = new RabinKarpStringSearch(pattern);
+        
+        int[] result = new int[4];
+        for(int i=0; i<4; i++) result[i] = st[i].find(content, 0);
+        
+        for(int i=0; i<3; i++) assertEquals(result[i], result[i+1]);
     }
+    
+    
+    public static String generateRandomString() {
+        String generatedString = "";
+        Random rd = new Random();
+        
+        for(int i=0; i<10000; i++)
+            generatedString += (char)rd.nextInt(256);
+
+        return generatedString;
+    }
+    
 }

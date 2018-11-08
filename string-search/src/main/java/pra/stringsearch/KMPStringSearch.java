@@ -10,7 +10,7 @@ public class KMPStringSearch extends StringSearchStrategy {
     public KMPStringSearch(String pattern){
         super(pattern);
         
-        next = new int[patternLength+1];
+        next = new int[pattern.length()+1];
         preprocessKMP();
     }
 
@@ -19,19 +19,20 @@ public class KMPStringSearch extends StringSearchStrategy {
         int i = 0;
         int j = begin;
         while(j < n){
-            while(i > -1 && pattern.charAt(i) != content.charAt(j)) i = next[i];
+            while(i > -1 && getPattern().charAt(i) != content.charAt(j)) i = next[i];
             i++;
             j++;
-            if(i >= patternLength) return j - i;
+            if(i >= getPatternLength()) return j - i;
         }
+        
         return NOT_FOUND;
     }
     
     private void preprocessKMP(){
         int i = 0;
         int j = next[0] = -1;
-        while(i < patternLength){
-            while(j > -1 && pattern.charAt(i) != pattern.charAt(j)) j = next[j];
+        while(i < getPatternLength()){
+            while(j > -1 && getPattern().charAt(i) != getPattern().charAt(j)) j = next[j];
             next[++i] = ++j;
         }
     }

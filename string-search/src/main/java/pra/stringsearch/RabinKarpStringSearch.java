@@ -11,19 +11,26 @@ public class RabinKarpStringSearch extends StringSearchStrategy {
     
     public RabinKarpStringSearch(String pattern){
         super(pattern);
-        patternHash = new Hash(pattern, 0, patternLength);
+        patternHash = new Hash(pattern, 0, pattern.length());
     }
 
     public int find(String content, int begin){
-        if(content.length() - begin < patternLength) return NOT_FOUND;
         int n = content.length();
-        Hash contentPattern = new Hash(content, begin, patternLength);
-        for(int i=begin; i<=n - patternLength; i++){
-            if( patternHash.equals(contentPattern) && pattern.equals( content.substring(i, i + patternLength) ) ) return i;
-            System.out.print(patternHash.value + " ");
-            contentPattern.updateHash(); // problem here
-            System.out.println(patternHash.value);
+        
+        if(n - begin < getPatternLength()) return NOT_FOUND;
+        
+        Hash contentPattern = new Hash(content, begin, getPatternLength());
+        int i;
+        for(i=begin; i<n - getPatternLength(); i++){
+            if( patternHash.equals(contentPattern)
+                && getPattern().equals( content.substring(i, i + getPatternLength()) ) )
+                    return i;
+            contentPattern.updateHash();
         }
+        if( patternHash.equals(contentPattern)
+            && getPattern().equals( content.substring(i, i + getPatternLength()) ) )
+                return i;
+        
         return NOT_FOUND;
     }
 
