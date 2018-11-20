@@ -6,6 +6,7 @@ public class SSRuntimeDecorator extends StringSearchStrategy {
     private String decoratedText;
     
     public SSRuntimeDecorator(StringSearchStrategy strategy, String decoratedText){
+        super("");
         this.strategy = strategy;
         this.decoratedText = decoratedText;
     }
