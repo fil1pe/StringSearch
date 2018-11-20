@@ -41,17 +41,19 @@ public class AppTest
         if(b > 10000) b = 10000;
         pattern = content.substring(a, b);
         
-        StringSearchStrategy[] st = new StringSearchStrategy[4];
+        StringSearchStrategy[] st = new StringSearchStrategy[6];
         
         st[0] = new BoyerMooreStringSearch(pattern);
         st[1] = new KMPStringSearch(pattern);
         st[2] = new NaiveStringSearch(pattern);
         st[3] = new RabinKarpStringSearch(pattern);
+        st[4] = new AhoCorasickStringSearch(pattern);
+        st[5] = new RadixTreeStringSearch(pattern);
         
-        int[] result = new int[4];
-        for(int i=0; i<4; i++) result[i] = st[i].find(content, 0);
+        int[] result = new int[6];
+        for(int i=0; i<6; i++) result[i] = st[i].find(content, 0);
         
-        for(int i=0; i<3; i++) assertEquals(result[i], result[i+1]);
+        for(int i=0; i<5; i++) assertEquals(result[i], result[i+1]);
     }
     
     

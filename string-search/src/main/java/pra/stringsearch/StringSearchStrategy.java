@@ -8,23 +8,23 @@ public abstract class StringSearchStrategy {
     protected final int NOT_FOUND = -1;
     private final String pattern;
     private final int patternLength;
-    
-    public StringSearchStrategy(String pattern){
+
+    public StringSearchStrategy(String pattern) {
         this.pattern = pattern;
         patternLength = pattern.length();
     }
-    
+
     /**
-     * Find the position of the pattern (substring)
-     * 
+     * Find the position of the pattern in a string
+     *
      * @param content
      * @param begin
      * @return index of the substring, or -1 if the content doesn't contain it
      */
     public abstract int find(String content, int begin);
-    
-    public String getPattern(){ return pattern; }
-    
-    public int getPatternLength(){ return patternLength; }
+
+    public String getPattern() { return pattern; }
+
+    public int getPatternLength() { return patternLength; }
 
 }
