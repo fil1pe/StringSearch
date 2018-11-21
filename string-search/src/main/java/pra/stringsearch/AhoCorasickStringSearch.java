@@ -125,7 +125,7 @@ public class AhoCorasickStringSearch extends StringSearchStrategy {
         private Node link;
         private Node parent;
 
-        Node(char c, boolean isTerminal, int state) {
+        private Node(char c, boolean isTerminal, int state) {
             this.c = c;
             word = new String();
             word = "" + c;
@@ -135,13 +135,13 @@ public class AhoCorasickStringSearch extends StringSearchStrategy {
             link = null;
         }
 
-        void addChild(Node n) {
+        private void addChild(Node n) {
             n.parent = this;
             n.word = this.word + n.word;
             this.children.add(n);
         }
 
-        Node getChild(char c) {
+        private Node getChild(char c) {
             for (Node n : this.children) {
                 if (n.c == c) {
                     return n;
@@ -151,7 +151,7 @@ public class AhoCorasickStringSearch extends StringSearchStrategy {
             return null;
         }
 
-        void setTerminal() {
+        private void setTerminal() {
             this.isTerminal = true;
         }
     }

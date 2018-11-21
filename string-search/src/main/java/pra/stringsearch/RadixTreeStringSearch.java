@@ -115,11 +115,11 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
         private int maxPatternLength = 0;
         private int size = 0;
 
-        public Tree() {
+        private Tree() {
             root = new Node(".", false, size++);
         }
 
-        public Node getNode(String s) {
+        private Node getNode(String s) {
             Node n = root;
             int ctrl = 0, ctrlf = 1;
             String word = s.substring(ctrl, ctrlf);
@@ -153,7 +153,7 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
             return n;
         }
 
-        public void addNode(String s) {
+        private void addNode(String s) {
             Node n = root;
             int ctrl = 0;
 
@@ -191,7 +191,7 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
         private final Node link;
         private Node parent;
 
-        public Node(String input, boolean isTerminal, int state) {
+        private Node(String input, boolean isTerminal, int state) {
             this.input = input;
             word = new String();
             word = "" + input;
@@ -201,7 +201,7 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
             link = null;
         }
 
-        public boolean compare(String word) {
+        private boolean compare(String word) {
             String newStr = this.word.substring(1);
 
             if (newStr.length() != word.length()) {
@@ -217,23 +217,23 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
             return true;
         }
 
-        public void setInput(String newChar) {
+        private void setInput(String newChar) {
             this.input += newChar;
             this.word += newChar;
         }
 
-        public void addChild(Node n) {
+        private void addChild(Node n) {
             n.parent = this;
             n.word = this.word + n.word;
             this.children.add(n);
         }
 
-        public void simplyAddChild(Node n) {
+        private void simplyAddChild(Node n) {
             n.parent = this;
             this.children.add(n);
         }
 
-        public Node getChild(String c) {
+        private Node getChild(String c) {
             for (Node n : this.children) {
                 if (n.input.compareTo(c) == 0) {
                     return n;
@@ -243,7 +243,7 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
             return null;
         }
 
-        public void setTerminal() {
+        private void setTerminal() {
             this.isTerminal = true;
         }
 
