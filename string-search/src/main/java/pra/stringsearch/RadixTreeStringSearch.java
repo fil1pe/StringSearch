@@ -3,6 +3,9 @@ package pra.stringsearch;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Radix Tree strategy for finding substring
+ */
 public class RadixTreeStringSearch extends StringSearchStrategy {
 
     private final Tree statesTree;
