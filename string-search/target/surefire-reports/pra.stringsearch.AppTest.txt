@@ -1,12 +1,9 @@
 -------------------------------------------------------------------------------
 Test set: pra.stringsearch.AppTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.09 sec <<< FAILURE!
-testComparison(pra.stringsearch.AppTest)  Time elapsed: 0.083 sec  <<< FAILURE!
-junit.framework.AssertionFailedError: expected:<8424> but was:<217>
-	at junit.framework.Assert.fail(Assert.java:47)
-	at junit.framework.Assert.failNotEquals(Assert.java:282)
-	at junit.framework.Assert.assertEquals(Assert.java:64)
-	at junit.framework.Assert.assertEquals(Assert.java:201)
-	at junit.framework.Assert.assertEquals(Assert.java:207)
-	at pra.stringsearch.AppTest.testComparison(AppTest.java:56)
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.406 sec <<< FAILURE!
+testComparison(pra.stringsearch.AppTest)  Time elapsed: 0.373 sec  <<< ERROR!
+java.lang.NullPointerException
+	at pra.stringsearch.RadixTreeStringSearch.montador(RadixTreeStringSearch.java:49)
+	at pra.stringsearch.RadixTreeStringSearch.<init>(RadixTreeStringSearch.java:19)
+	at pra.stringsearch.AppTest.testComparison(AppTest.java:51)
