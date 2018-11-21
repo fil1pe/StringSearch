@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="pra.stringsearch.AppTest" time="0.405" errors="1" skipped="0">
+<testsuite tests="1" failures="0" name="pra.stringsearch.AppTest" time="0.429" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/java/jdk1.8.0_171-amd64/jre/lib/amd64"/>
@@ -60,11 +60,5 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="pra.stringsearch.AppTest" name="testComparison" time="0.373">
-    <error type="java.lang.NullPointerException">java.lang.NullPointerException
-	at pra.stringsearch.RadixTreeStringSearch.montador(RadixTreeStringSearch.java:49)
-	at pra.stringsearch.RadixTreeStringSearch.&lt;init&gt;(RadixTreeStringSearch.java:19)
-	at pra.stringsearch.AppTest.testComparison(AppTest.java:51)
-</error>
-  </testcase>
+  <testcase classname="pra.stringsearch.AppTest" name="testComparison" time="0.395"/>
 </testsuite>

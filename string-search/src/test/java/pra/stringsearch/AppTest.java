@@ -8,8 +8,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test string search strategies
  */
-public class AppTest
-        extends TestCase {
+public class AppTest extends TestCase {
 
     /**
      * Create the test case
@@ -51,11 +50,11 @@ public class AppTest
         st[5] = new RadixTreeStringSearch(pattern);
 
         int[] result = new int[6];
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             result[i] = st[i].find(content, 0);
         }
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             assertEquals(result[i], result[i + 1]);
         }
     }
@@ -63,7 +62,7 @@ public class AppTest
     public static String generateRandomString() {
         String generatedString = "";
         Random rd = new Random();
-
+        
         for (int i = 0; i < 10000; i++) {
             generatedString += (char) rd.nextInt(256);
         }

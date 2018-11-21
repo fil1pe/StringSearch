@@ -1,9 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: pra.stringsearch.AppTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.406 sec <<< FAILURE!
-testComparison(pra.stringsearch.AppTest)  Time elapsed: 0.373 sec  <<< ERROR!
-java.lang.NullPointerException
-	at pra.stringsearch.RadixTreeStringSearch.montador(RadixTreeStringSearch.java:49)
-	at pra.stringsearch.RadixTreeStringSearch.<init>(RadixTreeStringSearch.java:19)
-	at pra.stringsearch.AppTest.testComparison(AppTest.java:51)
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.431 sec

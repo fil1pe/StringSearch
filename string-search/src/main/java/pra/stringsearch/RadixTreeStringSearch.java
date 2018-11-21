@@ -5,64 +5,62 @@ import java.util.List;
 
 public class RadixTreeStringSearch extends StringSearchStrategy {
 
-    private List<String> texto;
-    private final Tree estados;
-    private int palavraMin = 999, palavraMax = 0;
+    private final Tree statesTree;
+    private int minPatternLength = Integer.MAX_VALUE, maxPatternLength = 0;
+    private final char auxChar;
 
-    public RadixTreeStringSearch(String padrao) {
-        super(padrao);
+    public RadixTreeStringSearch(String pattern) {
+        super(pattern);
 
-        estados = new Tree();
+        statesTree = new Tree();
 
-        String[] vetor = {padrao, padrao};
+        auxChar = pattern.charAt(0) == (char) 255 ? (char) 254 : (char) (pattern.charAt(0) + 1);
 
-        montador(vetor);
+        assemble(new String[]{pattern, auxChar + pattern});
 
     }
 
-    private void montador(String[] palavras) {
+    private void assemble(String[] patterns) {
 
-        for (int i = 0; i < palavras.length; i++) {
-            if (palavras[i].length() > estados.getTamPalavraMax()) {
-                estados.setTamPalavraMax(palavras[i].length());
+        for (int i = 0; i < patterns.length; i++) {
+            if (patterns[i].length() > statesTree.maxPatternLength) {
+                statesTree.maxPatternLength = patterns[i].length();
             }
 
-            if (palavras[i].length() < estados.getTamPalavraMin()) {
-                estados.setTamPalavraMin(palavras[i].length());
+            if (patterns[i].length() < statesTree.minPatternLength) {
+                statesTree.minPatternLength = patterns[i].length();
             }
 
-            estados.addNoh1(palavras[i]);
+            statesTree.addNode(patterns[i]);
         }
 
-        //Noh n = estados.getRaiz();
-        for (String s : palavras) {
-            if (s.length() > palavraMax) {
-                palavraMax = s.length();
+        for (String s : patterns) {
+            if (s.length() > maxPatternLength) {
+                maxPatternLength = s.length();
             }
 
-            if (s.length() < palavraMin) {
-                palavraMin = s.length();
+            if (s.length() < minPatternLength) {
+                minPatternLength = s.length();
             }
 
-            Node n = estados.percorrer(s);
+            Node n = statesTree.getNode(s);
 
-            while (!n.equals(estados.getRaiz())) {
-
-                n = n.getPai();//! 
-                if (n.ehTerminal()) {
+            while (!n.equals(statesTree.root)) {
+                n = n.parent;
+                if (n.isTerminal) {
                     continue;
                 }
 
-                if (n.getVizinhos().size() == 1) {
-                    Node filho = n.getVizinhos().get(0);
+                if (n.children.size() == 1) {
+                    Node child = n.children.get(0);
 
-                    n.setEntrada(filho.getEntrada());
+                    n.setInput(child.input);
 
-                    for (Node p : filho.getVizinhos()) {
-                        n.addFilhoSC(p);
+                    for (Node p : child.children) {
+                        n.simplyAddChild(p);
                     }
 
-                    n.getVizinhos().remove(filho);
+                    n.children.remove(child);
                     n.setTerminal();
                 }
             }
@@ -71,36 +69,37 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
 
     }
 
-    public int find(String conteudo, int inicio) {
+    public int find(String content, int begin) {
 
-        ArrayList<String> arquivos = new ArrayList();
-        arquivos.add(conteudo);
+        ArrayList<String> texts = new ArrayList();
+        texts.add(content);
 
-        int linha = 1, cont = 0, fim = estados.getTamPalavraMin();
+        int end = statesTree.minPatternLength;
 
-        for (String arquivo : arquivos) {
-            while (inicio < arquivo.length() && fim < arquivo.length()) {
+        for (String t : texts) {
+            while (begin < t.length() && end < t.length()) {
 
-                String palavra = arquivo.substring(inicio, fim);//; System.out.println(">>>"+palavra);
-                Node n = estados.percorrer(palavra);
+                String substr = t.substring(begin, end);
+                Node n = statesTree.getNode(substr);
 
-                if ((n == null || !n.ehTerminal())) {
-                    if (fim - inicio < estados.getTamPalavraMax()) {
-                        fim++;
+                if ((n == null || !n.isTerminal)) {
+                    if (end - begin < statesTree.maxPatternLength) {
+                        end++;
 
                     } else {
-                        inicio++;
-                        fim = inicio + estados.getTamPalavraMin();
+                        begin++;
+                        end = begin + statesTree.minPatternLength;
                     }
                 } else {
-                    //System.out.println("Encontrado: " + n.getPalavra() + " linha: " + linha + " coluna: " + inicio);
-                    return inicio;
+                    if (t.charAt(begin) == auxChar) {
+                        begin++;
+                    }
+                    return begin;
                 }
 
             }
-            inicio = 0;
-            fim = estados.getTamPalavraMin();
-            linha++;
+            begin = 0;
+            end = statesTree.minPatternLength;
         }
 
         return -1;
@@ -108,8 +107,8 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
 
     private class Tree {
 
-        private Node root;
-        private int minPatternLength = 1000;
+        private final Node root;
+        private int minPatternLength = Integer.MAX_VALUE;
         private int maxPatternLength = 0;
         private int size = 0;
 
@@ -117,171 +116,123 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
             root = new Node(".", false, size++);
         }
 
-        public Node percorrer(String s) {
-
+        public Node getNode(String s) {
             Node n = root;
-            int controleI = 0, controleF = 1;
-            String palavra = s.substring(controleI, controleF);
+            int ctrl = 0, ctrlf = 1;
+            String word = s.substring(ctrl, ctrlf);
 
-            while (palavra.length() <= s.length()) {
+            while (word.length() <= s.length()) {
 
-                if (n.getFilho(palavra) == null) {
-                    controleF++;
-                    if (controleF <= s.length()) {
-                        palavra = s.substring(controleI, controleF);
+                if (n.getChild(word) == null) {
+                    ctrlf++;
+                    if (ctrlf <= s.length()) {
+                        word = s.substring(ctrl, ctrlf);
                     } else {
                         return null;
                     }
                 } else {
-                    n = n.getFilho(palavra);
-                    controleI += palavra.length();
+                    n = n.getChild(word);
+                    ctrl += word.length();
 
-                    if (controleI == s.length()) {
+                    if (ctrl == s.length()) {
                         break;
                     }
 
-                    palavra = s.substring(controleI, ++controleF);
-
+                    word = s.substring(ctrl, ++ctrlf);
                 }
 
             }
 
-            if (n.getPalavra().substring(1).compareTo(s) != 0)//comecando em 1 pq tem um ponto na raiz...
-            {
+            if (n.word.substring(1).compareTo(s) != 0) {
                 return null;
             }
 
             return n;
         }
 
-        public void setTamPalavraMin(int t) {
-            this.minPatternLength = t;
-        }
-
-        public void setTamPalavraMax(int t) {
-            this.maxPatternLength = t;
-        }
-
-        public int getTamPalavraMax() {
-            return this.maxPatternLength;
-        }
-
-        public int getTamPalavraMin() {
-            return this.minPatternLength;
-        }
-
-        public void addNoh1(String s) {
+        public void addNode(String s) {
             Node n = root;
-            int controle = 0;
+            int ctrl = 0;
 
-            for (; controle < s.length(); controle++) {
+            for (; ctrl < s.length(); ctrl++) {
 
-                if (n.getFilho("" + s.charAt(controle)) == null) {
+                if (n.getChild("" + s.charAt(ctrl)) == null) {
                     break;
                 }
 
-                n = n.getFilho("" + s.charAt(controle));
+                n = n.getChild("" + s.charAt(ctrl));
             }
 
-            if (controle == s.length()) {
+            if (ctrl == s.length()) {
                 n.setTerminal();
                 return;
             }
 
-            for (; controle < s.length(); controle++) {
-                Node novo = new Node("" + s.charAt(controle), false, size++);
-                n.addFilho(novo);
-                n = n.getFilho("" + s.charAt(controle));
+            for (; ctrl < s.length(); ctrl++) {
+                Node newNode = new Node("" + s.charAt(ctrl), false, size++);
+                n.addChild(newNode);
+                n = n.getChild("" + s.charAt(ctrl));
             }
             n.setTerminal();
-        }
-
-        public Node getRaiz() {
-            return this.root;
         }
 
     }
 
     private class Node {
 
-        private int estado;
-        private String entrada;
-        private String palavra;
-        private List<Node> filhos;
-        private boolean ehTerminal = false;
-        private Node link;
-        private Node pai;
+        private final int state;
+        private String input;
+        private String word;
+        private List<Node> children;
+        private boolean isTerminal = false;
+        private final Node link;
+        private Node parent;
 
-        public Node(String entrada, boolean ehTerminal, int state) {
-            this.entrada = entrada;
-            palavra = new String();
-            palavra = "" + entrada;
-            this.filhos = new ArrayList();
-            this.ehTerminal = ehTerminal;
-            this.estado = state;
+        public Node(String input, boolean isTerminal, int state) {
+            this.input = input;
+            word = new String();
+            word = "" + input;
+            this.children = new ArrayList();
+            this.isTerminal = isTerminal;
+            this.state = state;
             link = null;
         }
 
-        public boolean compare(String outraPalavra) {
+        public boolean compare(String word) {
+            String newStr = this.word.substring(1);
 
-            String nova = this.palavra.substring(1);
-
-            if (nova.length() != outraPalavra.length()) {
-                //System.out.println("F: " + nova.length() + "!=" + outraPalavra.length());
+            if (newStr.length() != word.length()) {
                 return false;
             }
 
-            for (int i = 0; i < nova.length(); i++) {
-                if (nova.charAt(i) != outraPalavra.charAt(i)) {
-                    return false;//diferentes
+            for (int i = 0; i < newStr.length(); i++) {
+                if (newStr.charAt(i) != word.charAt(i)) {
+                    return false;
                 }
             }
 
-            //System.out.println("Y");
-            return true;//iguais
+            return true;
         }
 
-        public String getPalavra() {
-            return this.palavra;
+        public void setInput(String newChar) {
+            this.input += newChar;
+            this.word += newChar;
         }
 
-        public int getEstado() {
-            return this.estado;
+        public void addChild(Node n) {
+            n.parent = this;
+            n.word = this.word + n.word;
+            this.children.add(n);
         }
 
-        public void setEntrada(String novaEntrada) {
-            this.entrada += novaEntrada;
-            this.palavra += novaEntrada;
-
+        public void simplyAddChild(Node n) {
+            n.parent = this;
+            this.children.add(n);
         }
 
-        public String getEntrada() {
-            return this.entrada;
-        }
-
-        public void setPai(Node noh) {
-            this.pai = noh;
-        }
-
-        public Node getPai() {
-            return this.pai;
-        }
-
-        public void addFilho(Node noh) {
-            noh.setPai(this);
-            noh.palavra = this.palavra + noh.palavra;
-            this.filhos.add(noh);
-            //System.out.println(noh.getEntrada()+":"+noh.palavra+" <"+this.getEntrada()+">;");//p/ verificar arvore
-        }
-
-        public void addFilhoSC(Node noh) {//adicionar filho sem calculo da palavra ou entrada
-            noh.setPai(this);
-            this.filhos.add(noh);
-        }
-
-        public Node getFilho(String letra) {
-            for (Node n : this.filhos) {
-                if (n.getEntrada().compareTo(letra) == 0) {
+        public Node getChild(String c) {
+            for (Node n : this.children) {
+                if (n.input.compareTo(c) == 0) {
                     return n;
                 }
             }
@@ -289,24 +240,10 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
             return null;
         }
 
-        public List<Node> getVizinhos() {
-            return this.filhos;
-        }
-
-        public Node getLink() {
-            return this.link;
-        }
-
-        public boolean ehTerminal() {
-            return this.ehTerminal;
-        }
-
         public void setTerminal() {
-            this.ehTerminal = true;
+            this.isTerminal = true;
         }
 
-        public void setLink(Node n) {
-            this.link = n;
-        }
     }
+
 }

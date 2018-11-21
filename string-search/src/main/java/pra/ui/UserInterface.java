@@ -159,11 +159,12 @@ public class UserInterface extends javax.swing.JFrame {
         String palavra = campoPalavra.getText();
         String texto;
         String saida = "";
-        ArrayList<Integer> index = new ArrayList();
 
         StringSearchStrategy[] st = new StringSearchStrategy[6];
 
         for (int i = 0; i < listaArquivos.getModel().getSize(); i++) {
+
+            ArrayList<Integer> index = new ArrayList();
 
             texto = arquivos[i];
 

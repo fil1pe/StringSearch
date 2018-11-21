@@ -23,7 +23,7 @@ public class AhoCorasickStringSearch extends StringSearchStrategy {
 
         statesTree.root.link = statesTree.root;
 
-        for (Node n : statesTree.root.child) {
+        for (Node n : statesTree.root.children) {
             n.link = statesTree.root;
         }
 
@@ -120,7 +120,7 @@ public class AhoCorasickStringSearch extends StringSearchStrategy {
         private final int state;
         private final char c;
         private String word;
-        private final List<Node> child;
+        private final List<Node> children;
         private boolean isTerminal = false;
         private Node link;
         private Node parent;
@@ -129,7 +129,7 @@ public class AhoCorasickStringSearch extends StringSearchStrategy {
             this.c = c;
             word = new String();
             word = "" + c;
-            this.child = new ArrayList();
+            this.children = new ArrayList();
             this.isTerminal = isTerminal;
             this.state = state;
             link = null;
@@ -138,11 +138,11 @@ public class AhoCorasickStringSearch extends StringSearchStrategy {
         void addChild(Node n) {
             n.parent = this;
             n.word = this.word + n.word;
-            this.child.add(n);
+            this.children.add(n);
         }
 
         Node getChild(char c) {
-            for (Node n : this.child) {
+            for (Node n : this.children) {
                 if (n.c == c) {
                     return n;
                 }
