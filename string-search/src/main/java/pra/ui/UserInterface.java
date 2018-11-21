@@ -3,6 +3,7 @@ package pra.ui;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import pra.stringsearch.AhoCorasickStringSearch;
@@ -13,15 +14,6 @@ import pra.stringsearch.RabinKarpStringSearch;
 import pra.stringsearch.SSRunTimeDecorator;
 import pra.stringsearch.StringSearchStrategy;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author udesc
- */
 public class UserInterface extends javax.swing.JFrame {
 
     public String[] arquivos = new String[43];
@@ -167,7 +159,7 @@ public class UserInterface extends javax.swing.JFrame {
         String palavra = campoPalavra.getText();
         String texto;
         String saida = "";
-        int[] index = new int[]{-1, -1, -1, -1, -1, -1};
+        ArrayList<Integer> index = new ArrayList();
 
         StringSearchStrategy[] st = new StringSearchStrategy[6];
 
@@ -180,29 +172,30 @@ public class UserInterface extends javax.swing.JFrame {
             st[2] = new NaiveStringSearch(palavra);
             st[3] = new RabinKarpStringSearch(palavra);
             st[4] = new AhoCorasickStringSearch(palavra);
+            st[5] = new RabinKarpStringSearch(palavra);
 
             StringBuilder[] temposTxt = new StringBuilder[6];
-            
-            for (int j = 0; j < 5; j++) {
+
+            for (int j = 0; j < 6; j++) {
                 temposTxt[j] = new StringBuilder();
                 st[j] = new SSRunTimeDecorator(st[j], temposTxt[j]);
-                index[j] = st[j].find(texto, 0);
+                index.add(st[j].find(texto, 0));
             }
 
             saida = saida + listaArquivos.getModel().getElementAt(i) + ": ";
 
-            if (index[0] == -1) {
+            if (index.get(0) == -1) {
                 saida = saida + "not found\n\n";
             } else {
-                saida = saida + "found at index " + index[0] + "\n\n";
+                saida = saida + "found at index " + index.get(0) + "\n\n";
             }
 
             saida = saida + "Boyer Moore's run-time: " + temposTxt[0] + "\n";
-            saida = saida + "KMP's run-time: " + temposTxt[1] + " \n";
-            saida = saida + "Naive's run-time: " + temposTxt[2] + " \n";
-            saida = saida + "Rabin's run-time: " + temposTxt[3] + " \n";
-            //saida = saida + "Radix Tree's run-time: " + temposTxt[4] + " \n";
-            saida = saida + "Aho Corasick's run-time: " + temposTxt[4] + " \n\n";
+            saida = saida + "KMP's run-time: " + temposTxt[1] + "\n";
+            saida = saida + "Naive's run-time: " + temposTxt[2] + "\n";
+            saida = saida + "Rabin's run-time: " + temposTxt[3] + "\n";
+            saida = saida + "Aho Corasick's run-time: " + temposTxt[4] + "\n";
+            saida = saida + "Radix Tree's run-time: " + temposTxt[5] + "\n\n";
 
         }
 

@@ -1,5 +1,7 @@
 package pra.stringsearch;
 
+import java.util.ArrayList;
+
 /**
  * Abstract strategy for finding substring
  */
@@ -23,8 +25,34 @@ public abstract class StringSearchStrategy {
      */
     public abstract int find(String content, int begin);
 
-    public String getPattern() { return pattern; }
+    /**
+     * Find all the positions of the pattern in a string
+     *
+     * @param content
+     * @return array of indexes where we can find the substring
+     */
+    public ArrayList<Integer> find(String content) {
+        ArrayList<Integer> positions = new ArrayList();
 
-    public int getPatternLength() { return patternLength; }
+        int foundAt, begin = 0;
+        do {
+            foundAt = find(content, begin);
+            begin = foundAt + patternLength;
+            if (foundAt == NOT_FOUND) {
+                break;
+            }
+            positions.add(foundAt);
+        } while (content.length() - begin >= patternLength);
+
+        return positions;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public int getPatternLength() {
+        return patternLength;
+    }
 
 }

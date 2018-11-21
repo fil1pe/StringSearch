@@ -14,7 +14,7 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
 
         estados = new Tree();
 
-        String[] vetor = {padrao, "."};
+        String[] vetor = {padrao, padrao};
 
         montador(vetor);
 
@@ -44,7 +44,7 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
                 palavraMin = s.length();
             }
 
-            Noh1 n = estados.percorrer(s);
+            Node n = estados.percorrer(s);
 
             while (!n.equals(estados.getRaiz())) {
 
@@ -54,11 +54,11 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
                 }
 
                 if (n.getVizinhos().size() == 1) {
-                    Noh1 filho = n.getVizinhos().get(0);
+                    Node filho = n.getVizinhos().get(0);
 
                     n.setEntrada(filho.getEntrada());
 
-                    for (Noh1 p : filho.getVizinhos()) {
+                    for (Node p : filho.getVizinhos()) {
                         n.addFilhoSC(p);
                     }
 
@@ -82,7 +82,7 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
             while (inicio < arquivo.length() && fim < arquivo.length()) {
 
                 String palavra = arquivo.substring(inicio, fim);//; System.out.println(">>>"+palavra);
-                Noh1 n = estados.percorrer(palavra);
+                Node n = estados.percorrer(palavra);
 
                 if ((n == null || !n.ehTerminal())) {
                     if (fim - inicio < estados.getTamPalavraMax()) {
@@ -108,18 +108,18 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
 
     private class Tree {
 
-        private Noh1 raiz;
-        private int tamPalavraMin = 1000;
-        private int tamPalavraMax = 0;
+        private Node root;
+        private int minPatternLength = 1000;
+        private int maxPatternLength = 0;
         private int size = 0;
 
         public Tree() {
-            raiz = new Noh1(".", false, size++);
+            root = new Node(".", false, size++);
         }
 
-        public Noh1 percorrer(String s) {
+        public Node percorrer(String s) {
 
-            Noh1 n = raiz;
+            Node n = root;
             int controleI = 0, controleF = 1;
             String palavra = s.substring(controleI, controleF);
 
@@ -155,23 +155,23 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
         }
 
         public void setTamPalavraMin(int t) {
-            this.tamPalavraMin = t;
+            this.minPatternLength = t;
         }
 
         public void setTamPalavraMax(int t) {
-            this.tamPalavraMax = t;
+            this.maxPatternLength = t;
         }
 
         public int getTamPalavraMax() {
-            return this.tamPalavraMax;
+            return this.maxPatternLength;
         }
 
         public int getTamPalavraMin() {
-            return this.tamPalavraMin;
+            return this.minPatternLength;
         }
 
         public void addNoh1(String s) {
-            Noh1 n = raiz;
+            Node n = root;
             int controle = 0;
 
             for (; controle < s.length(); controle++) {
@@ -189,30 +189,30 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
             }
 
             for (; controle < s.length(); controle++) {
-                Noh1 novo = new Noh1("" + s.charAt(controle), false, size++);
+                Node novo = new Node("" + s.charAt(controle), false, size++);
                 n.addFilho(novo);
                 n = n.getFilho("" + s.charAt(controle));
             }
             n.setTerminal();
         }
 
-        public Noh1 getRaiz() {
-            return this.raiz;
+        public Node getRaiz() {
+            return this.root;
         }
 
     }
 
-    private class Noh1 {
+    private class Node {
 
         private int estado;
         private String entrada;
         private String palavra;
-        private List<Noh1> filhos;
+        private List<Node> filhos;
         private boolean ehTerminal = false;
-        private Noh1 link;
-        private Noh1 pai;
+        private Node link;
+        private Node pai;
 
-        public Noh1(String entrada, boolean ehTerminal, int state) {
+        public Node(String entrada, boolean ehTerminal, int state) {
             this.entrada = entrada;
             palavra = new String();
             palavra = "" + entrada;
@@ -259,28 +259,28 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
             return this.entrada;
         }
 
-        public void setPai(Noh1 noh) {
+        public void setPai(Node noh) {
             this.pai = noh;
         }
 
-        public Noh1 getPai() {
+        public Node getPai() {
             return this.pai;
         }
 
-        public void addFilho(Noh1 noh) {
+        public void addFilho(Node noh) {
             noh.setPai(this);
             noh.palavra = this.palavra + noh.palavra;
             this.filhos.add(noh);
             //System.out.println(noh.getEntrada()+":"+noh.palavra+" <"+this.getEntrada()+">;");//p/ verificar arvore
         }
 
-        public void addFilhoSC(Noh1 noh) {//adicionar filho sem calculo da palavra ou entrada
+        public void addFilhoSC(Node noh) {//adicionar filho sem calculo da palavra ou entrada
             noh.setPai(this);
             this.filhos.add(noh);
         }
 
-        public Noh1 getFilho(String letra) {
-            for (Noh1 n : this.filhos) {
+        public Node getFilho(String letra) {
+            for (Node n : this.filhos) {
                 if (n.getEntrada().compareTo(letra) == 0) {
                     return n;
                 }
@@ -289,11 +289,11 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
             return null;
         }
 
-        public List<Noh1> getVizinhos() {
+        public List<Node> getVizinhos() {
             return this.filhos;
         }
 
-        public Noh1 getLink() {
+        public Node getLink() {
             return this.link;
         }
 
@@ -305,7 +305,7 @@ public class RadixTreeStringSearch extends StringSearchStrategy {
             this.ehTerminal = true;
         }
 
-        public void setLink(Noh1 n) {
+        public void setLink(Node n) {
             this.link = n;
         }
     }
