@@ -34,7 +34,7 @@ public class AppTest extends TestCase {
         String pattern;
 
         int a = new Random().nextInt(10000);
-        int b = a + new Random().nextInt(100) + 1; // The substring must contain at most 100 chars
+        int b = a + new Random().nextInt(99) + 2; // The substring must contain at most 100 chars
         if (b > 10000) {
             b = 10000;
         }
