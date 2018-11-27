@@ -16,7 +16,7 @@ import pra.stringsearch.StringSearchStrategy;
 
 public class UserInterface extends javax.swing.JFrame {
 
-    public String[] arquivos = new String[43];
+    public String[] arquivos = new String[45];
 
     /**
      * Creates new form UserInterface
@@ -89,7 +89,7 @@ public class UserInterface extends javax.swing.JFrame {
         jScrollPane3.setViewportView(campoTexto);
 
         listaArquivos.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "All's Well That Ends Well", "A Midsummer Night's Dream", "Antony and Cleopatra", "As You Like It", "Coriolanus", "Cymbeline", "Hamlet", "Henry IV Part 1", "Henry IV Part 2", "Henry V", "Henry VIII", "Henry VI Part 1", "Henry VI Part 2", "Henry VI Part 3", "Julius Caesar", "King John", "King Lear", "Love's Labor's Lost", "Lucrece", "Macbeth", "Measure for Measure", "Much Ado About Nothing", "Othello", "Pericles Prince of Tyre", "Richard II", "Richard III", "Romeo and Juliet", "Sonnets", "The Comedy of Errors", "The Merchant of Venice", "The Merry Wives of Windsor", "The Phoenix and Turtle", "The Taming of the Shrew", "The Tempest", "The Two Noble Kinsmen", "The Winter's Tale", "Timon of Athens", "Titus Andronicus", "Troilus and Cressida", "Twelfth Night", "Two Gentlemen of Verona", "Venus and Adonis" };
+            String[] strings = { "A Fairy Song", "All's Well That Ends Well", "A Midsummer Night's Dream", "Antony and Cleopatra", "As You Like It", "Coriolanus", "Cymbeline", "DNA" , "Hamlet", "Henry IV Part 1", "Henry IV Part 2", "Henry V", "Henry VIII", "Henry VI Part 1", "Henry VI Part 2", "Henry VI Part 3", "Julius Caesar", "King John", "King Lear", "Love's Labor's Lost", "Lucrece", "Macbeth", "Measure for Measure", "Much Ado About Nothing", "Othello", "Pericles Prince of Tyre", "Richard II", "Richard III", "Romeo and Juliet", "Sonnets", "The Comedy of Errors", "The Merchant of Venice", "The Merry Wives of Windsor", "The Phoenix and Turtle", "The Taming of the Shrew", "The Tempest", "The Two Noble Kinsmen", "The Winter's Tale", "Timon of Athens", "Titus Andronicus", "Troilus and Cressida", "Twelfth Night", "Two Gentlemen of Verona", "Venus and Adonis" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -183,7 +183,7 @@ public class UserInterface extends javax.swing.JFrame {
                 index.add(st[j].find(texto, 0));
             }
 
-            saida = saida + listaArquivos.getModel().getElementAt(i) + ": ";
+            saida = saida + listaArquivos.getModel().getElementAt(i) + " (size: " + texto.length() + "): ";
 
             if (index.get(0) == -1) {
                 saida = saida + "not found\n\n";
